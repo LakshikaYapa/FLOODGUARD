@@ -7,6 +7,7 @@ import Incidents from './pages/Incidents';
 import Dashboard from './pages/Dashboard';
 import Shelters from './pages/Shelters';
 import EmergencyAssistance from './pages/EmergencyAssistance';
+import VolunteerPortal from './pages/VolunteerPortal';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/reports" element={<Incidents />} />
           <Route path="/shelters" element={<Shelters />} />
           <Route path="/assistance" element={<EmergencyAssistance />} /> 
+          <Route path="/volunteers" element={<VolunteerPortal />} />
         </Routes>
       </main>
     </div>

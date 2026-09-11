@@ -4,6 +4,7 @@ import { ShieldAlert, LogOut, User, Menu, X, Globe } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { LanguageContext } from '../context/LanguageContext';
 
+
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const { lang, toggleLanguage } = useContext(LanguageContext);
@@ -28,10 +29,13 @@ const Navbar = () => {
               <span>FloodGuard</span>
               <img src="https://flagcdn.com/w40/lk.png" alt="SL" className="w-6 h-auto rounded-sm border border-slate-700 ml-1 inline-block" />
             </Link>
+            <Link to="/volunteers" className="hover:text-blue-400 font-semibold transition">
+  🤝 {lang === 'en' ? 'Volunteers' : 'ස්වේච්ඡා සේවකයින්'}
+</Link>
 
             <div className="hidden md:flex items-center space-x-5 font-medium text-slate-300 text-sm pl-4 border-l border-slate-800">
               <Link to="/" className="hover:text-blue-400">{lang === 'en' ? 'Dashboard' : 'ප්‍රධාන පුවරුව'}</Link>
-              <Link to="/reports" className="hover:text-blue-400">{lang === 'en' ? 'Incidents' : 'වාර්තා'}</Link>
+             <Link to="/reports" className="hover:text-blue-400">{lang === 'en' ? 'Incidents' : 'වාර්තා'}</Link>
               <Link to="/shelters" className="hover:text-blue-400">{lang === 'en' ? 'Shelters' : 'සුරක්ෂිත මධ්‍යස්ථාන'}</Link>
               <Link to="/assistance" className="hover:text-blue-400 font-semibold transition">
   🆘 {lang === 'en' ? 'Emergency Help' : 'හදිසි සහන'}
