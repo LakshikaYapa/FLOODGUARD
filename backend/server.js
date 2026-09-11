@@ -1,29 +1,40 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config();
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const app = express();
 
 // Middleware
-app.use(cors());
 app.use(express.json());
-
-// Routes Connection
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/reports', require('./routes/reportRoutes'));
-app.use('/api/shelters', require('./routes/shelterRoutes'));
-
-// Root Endpoint
-app.get('/', (req, res) => {
-  res.send('FloodGuard API is running...');
-});
+app.use(cors());
 
 // Database Connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB Connected Successfully! '))
-  .catch((err) => console.error('MongoDB Connection Error:', err));
+mongoose
+  .connect(process.env.MONGO_URI || 'mongodb://localhost:27017/floodguard')
+  .then(() => console.log('MongoDB Connected Successfully!'))
+  .catch((err) => console.error('MongoDB Connection Failed:', err));
 
+// Route Imports
+const authRoutes = require('./routes/authRoutes');
+const reportRoutes = require('./routes/reportRoutes');
+const shelterRoutes = require('./routes/shelterRoutes');
+const assistanceRoutes = require('./routes/assistanceRoutes');
+
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/reports', reportRoutes);
+app.use('/api/shelters', shelterRoutes);
+app.use('/api/assistance', assistanceRoutes);
+
+// Health Check Endpoint
+app.get('/', (req, res) => {
+  res.send('FloodGuard Disaster Management API is running...');
+});
+
+// Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

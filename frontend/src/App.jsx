@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import Incidents from './pages/Incidents';
 import Dashboard from './pages/Dashboard';
 import Shelters from './pages/Shelters';
+import EmergencyAssistance from './pages/EmergencyAssistance';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/reports" element={<Incidents />} />
           <Route path="/shelters" element={<Shelters />} />
+          <Route path="/assistance" element={<EmergencyAssistance />} /> 
         </Routes>
       </main>
     </div>

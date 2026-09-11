@@ -33,6 +33,9 @@ const Navbar = () => {
               <Link to="/" className="hover:text-blue-400">{lang === 'en' ? 'Dashboard' : 'ප්‍රධාන පුවරුව'}</Link>
               <Link to="/reports" className="hover:text-blue-400">{lang === 'en' ? 'Incidents' : 'වාර්තා'}</Link>
               <Link to="/shelters" className="hover:text-blue-400">{lang === 'en' ? 'Shelters' : 'සුරක්ෂිත මධ්‍යස්ථාන'}</Link>
+              <Link to="/assistance" className="hover:text-blue-400 font-semibold transition">
+  🆘 {lang === 'en' ? 'Emergency Help' : 'හදිසි සහන'}
+</Link>
             </div>
           </div>
 
@@ -65,6 +68,8 @@ const Navbar = () => {
               <Link to="/login" className="bg-blue-600 hover:bg-blue-500 px-4 py-1.5 rounded-lg font-semibold text-sm">
                 {lang === 'en' ? 'Login' : 'ඇතුළු වන්න'}
               </Link>
+
+              
             )}
           </div>
 
