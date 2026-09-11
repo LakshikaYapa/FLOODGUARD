@@ -1,78 +1,113 @@
 import React, { useState, useEffect, useContext } from 'react';
 import API from '../services/api';
 import { LanguageContext } from '../context/LanguageContext';
+import { AuthContext } from '../context/AuthContext';
+import rainBg from '../assets/rain-bg.jpg';
 
 const Dashboard = () => {
   const { lang } = useContext(LanguageContext);
+  const { user } = useContext(AuthContext);
   const [incidents, setIncidents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [photos, setPhotos] = useState([
+    { id: '1', url: 'https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&w=600&q=80', title: 'Food Distribution', location: 'Galle' },
+    { id: '2', url: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=600&q=80', title: 'Medical Aid Camp', location: 'Colombo' }
+  ]);
+  const [newPhoto, setNewPhoto] = useState({ title: '', url: '', location: '' });
+  const [showUpload, setShowUpload] = useState(false);
+
+  const isVolunteer = user?.roles?.includes('volunteer');
 
   useEffect(() => {
-    const fetchIncidents = async () => {
-      try {
-        const res = await API.get('/incidents');
-        setIncidents(res.data);
-      } catch (err) {
-        setIncidents([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchIncidents();
+    API.get('/incidents').then((res) => setIncidents(res.data)).catch(() => setIncidents([]));
   }, []);
 
-  const getBadgeColor = (level) => {
-    switch (level) {
-      case 'Critical': return 'bg-rose-500/20 text-rose-400 border-rose-500/30';
-      case 'High': return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
-      case 'Medium': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-      default: return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-    }
+  const handlePhotoSubmit = (e) => {
+    e.preventDefault();
+    if (!newPhoto.url) return;
+    setPhotos([{ id: Date.now().toString(), ...newPhoto }, ...photos]);
+    setNewPhoto({ title: '', url: '', location: '' });
+    setShowUpload(false);
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center border-b border-slate-800 pb-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">
-            {lang === 'en' ? 'Live Flood Dashboard' : 'සජීවී ගංවතුර තොරතුරු පුවරුව'}
-          </h1>
-          <p className="text-slate-400 text-xs sm:text-sm mt-1">
-            {lang === 'en' ? 'Real-time reported incidents' : 'පරිශීලකයින් විසින් සජීවීව වාර්තා කළ ආපදා තොරතුරු'}
-          </p>
-        </div>
-      </div>
+    <div 
+      className="min-h-[calc(100vh-4rem)] w-full bg-cover bg-center bg-fixed relative p-4 sm:p-8"
+      style={{ backgroundImage: `url(${rainBg})` }}
+    >
+      {/* Transparency Overlay */}
+      <div className="absolute inset-0 bg-slate-950/75 backdrop-blur-[2px]" />
 
-      {loading ? (
-        <p className="text-slate-400 text-center py-8">
-          {lang === 'en' ? 'Loading incidents...' : 'තොරතුරු ලබා ගනිමින්...'}
-        </p>
-      ) : incidents.length === 0 ? (
-        <div className="text-center py-12 bg-slate-900/50 rounded-xl border border-slate-800">
-          <p className="text-slate-400 text-sm">
-            {lang === 'en' 
-              ? 'No incidents reported yet. Verified reports will appear here.' 
-              : 'තවම කිසිදු ආපදාවක් වාර්තා වී නොමැත. පරිශීලකයින් වාර්තා කරන තොරතුරු මෙහි දර්ශනය වේ.'}
+      <div className="relative z-10 max-w-7xl mx-auto space-y-8">
+        {/* Hero Section */}
+        <section className="bg-slate-900/60 backdrop-blur-md border border-slate-700/50 rounded-2xl p-6 text-center space-y-3">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-400/30">
+            🌧️ {lang === 'en' ? 'Live Flood Alert System' : 'සජීවී ගංවතුර පූර්ව අනතුරු ඇඟවීමේ පද්ධතිය'}
+          </span>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-white">
+            {lang === 'en' ? 'Rapid Flood Response Sri Lanka' : 'ශ්‍රී ලංකා හදිසි ගංවතුර සහන මෙහෙයුම්'}
+          </h1>
+          <p className="text-slate-200 text-sm sm:text-base max-w-2xl mx-auto">
+            {lang === 'en'
+              ? 'FloodGuard connects flood-affected residents, relief workers, and safe shelter managers in real-time.'
+              : 'FloodGuard මගින් ගංවතුරෙන් ආපදාවට ලක්වූවන්, ස්වේච්ඡා සහන සේවකයින් සහ සුරක්ෂිත මධ්‍යස්ථාන සජීවීව සම්බන්ධ කරයි.'}
           </p>
-        </div>
-      ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {incidents.map((item) => (
-            <div key={item._id || item.id} className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
-              <div className="flex justify-between items-start">
-                <h3 className="font-bold text-slate-100 text-base">{item.title}</h3>
-                <span className={`text-xs px-2.5 py-1 rounded-full border ${getBadgeColor(item.waterLevel)}`}>
-                  {item.waterLevel}
-                </span>
-              </div>
-              <p className="text-xs text-blue-400 font-medium">
-                📍 {item.nearestTown}, {item.district}
-              </p>
-              <p className="text-slate-300 text-xs line-clamp-2">{item.description}</p>
+        </section>
+
+        {/* Volunteer Photos */}
+        <section className="space-y-4">
+          <div className="flex justify-between items-center border-b border-slate-700/60 pb-2">
+            <div>
+              <h2 className="text-xl font-bold text-white">{lang === 'en' ? 'Community Relief Efforts' : 'සහන සේවාවන්හි සජීවී සෙවනැලි'}</h2>
+              <p className="text-xs text-slate-300">{lang === 'en' ? 'Photos uploaded by volunteers' : 'ස්වේච්ඡා සේවකයින්ගේ සහන සේවා ඡායාරූප'}</p>
             </div>
-          ))}
-        </div>
-      )}
+            {isVolunteer && (
+              <button onClick={() => setShowUpload(!showUpload)} className="bg-blue-600 text-white text-xs px-3 py-1.5 rounded font-semibold">
+                {showUpload ? 'X' : lang === 'en' ? '+ Upload Photo' : '+ ඡායාරූපයක් එක් කරන්න'}
+              </button>
+            )}
+          </div>
+
+          {showUpload && (
+            <form onSubmit={handlePhotoSubmit} className="bg-slate-900/90 border border-slate-700 p-4 rounded-xl space-y-2 max-w-md mx-auto">
+              <input type="text" placeholder="Title" required className="w-full p-2 bg-slate-950 border border-slate-800 rounded text-white text-xs" onChange={(e) => setNewPhoto({ ...newPhoto, title: e.target.value })} />
+              <input type="url" placeholder="Image URL" required className="w-full p-2 bg-slate-950 border border-slate-800 rounded text-white text-xs" onChange={(e) => setNewPhoto({ ...newPhoto, url: e.target.value })} />
+              <input type="text" placeholder="Location" required className="w-full p-2 bg-slate-950 border border-slate-800 rounded text-white text-xs" onChange={(e) => setNewPhoto({ ...newPhoto, location: e.target.value })} />
+              <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded text-xs font-semibold">Post</button>
+            </form>
+          )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {photos.map((item) => (
+              <div key={item.id} className="bg-slate-900/70 backdrop-blur border border-slate-700/60 rounded-xl overflow-hidden">
+                <img src={item.url} alt={item.title} className="w-full h-40 object-cover" />
+                <div className="p-3">
+                  <h4 className="font-semibold text-white text-sm">{item.title}</h4>
+                  <p className="text-xs text-blue-300">📍 {item.location}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Incidents */}
+        <section className="space-y-3">
+          <h2 className="text-xl font-bold text-white border-b border-slate-700/60 pb-2">{lang === 'en' ? 'Recent Flood Incidents' : 'නවතම ආපදා වාර්තා'}</h2>
+          {incidents.length === 0 ? (
+            <p className="text-slate-300 text-xs text-center py-6 bg-slate-900/50 backdrop-blur rounded-xl border border-slate-700/50">
+              {lang === 'en' ? 'No active flood incidents reported.' : 'වාර්තා වූ ආපදා නොමැත.'}
+            </p>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-3">
+              {incidents.map((item) => (
+                <div key={item._id || item.id} className="bg-slate-900/70 backdrop-blur border border-slate-700/60 p-4 rounded-xl">
+                  <h3 className="font-bold text-white text-sm">{item.title}</h3>
+                  <p className="text-xs text-blue-300">📍 {item.nearestTown}, {item.district}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
     </div>
   );
 };
