@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Incidents from './pages/Incidents';
 import Dashboard from './pages/Dashboard';
+import Shelters from './pages/Shelters';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reports" element={<Incidents />} />
+          <Route path="/shelters" element={<Shelters />} />
         </Routes>
       </main>
     </div>
