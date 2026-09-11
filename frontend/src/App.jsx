@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Incidents from './pages/Incidents';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/reports" element={<Incidents />} />
         </Routes>
       </main>
     </div>
