@@ -25,8 +25,10 @@ const shelterRoutes = require('./routes/shelterRoutes');
 const assistanceRoutes = require('./routes/assistanceRoutes');
 const volunteerRoutes = require('./routes/volunteerRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 // API Routes
+app.use('/api/admin', adminRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/shelters', shelterRoutes);

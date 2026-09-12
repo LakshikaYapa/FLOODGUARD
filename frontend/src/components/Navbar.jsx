@@ -17,6 +17,8 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
+  const isAdmin = user && (user.role === 'admin' || (user.roles && user.roles.includes('admin')));
+
   return (
     <nav className="bg-slate-900 text-white border-b border-slate-800 shadow-lg sticky top-0 z-50">
       <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -40,15 +42,18 @@ const Navbar = () => {
               <Link to="/assistance" className="hover:text-blue-400 font-semibold transition">
                 🆘 {lang === 'en' ? 'Emergency Help' : 'හදිසි සහන'}
               </Link>
+              {isAdmin && (
+                <Link to="/admin" className="hover:text-amber-400 font-semibold transition text-amber-400">
+                  ⚙️ {lang === 'en' ? 'Admin' : 'පාලක පුවරුව'}
+                </Link>
+              )}
             </div>
           </div>
 
-          {/* Right Controls: Notification Bell + Language Selector + User Profile */}
+          {/* Right Controls */}
           <div className="hidden md:flex items-center space-x-4">
-            {/* Notification Bell */}
             <NotificationBell />
 
-            {/* Language Switcher */}
             <div className="flex items-center space-x-1 bg-slate-950 border border-slate-800 px-2 py-1 rounded-lg text-xs">
               <Globe className="w-3.5 h-3.5 text-slate-400" />
               <select
@@ -113,6 +118,11 @@ const Navbar = () => {
             <Link to="/assistance" onClick={() => setIsOpen(false)} className="block text-sm text-slate-300 hover:text-blue-400">
               🆘 {lang === 'en' ? 'Emergency Help' : 'හදිසි සහන'}
             </Link>
+            {isAdmin && (
+              <Link to="/admin" onClick={() => setIsOpen(false)} className="block text-sm text-amber-400 font-semibold hover:text-amber-300">
+                ⚙️ {lang === 'en' ? 'Admin' : 'පාලක පුවරුව'}
+              </Link>
+            )}
 
             {user ? (
               <div className="pt-3 border-t border-slate-800 space-y-2">
