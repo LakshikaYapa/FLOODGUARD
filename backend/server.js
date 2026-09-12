@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const volunteerRoutes = require('./routes/volunteerRoutes');
+
 
 dotenv.config();
 
@@ -23,6 +23,8 @@ const authRoutes = require('./routes/authRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const shelterRoutes = require('./routes/shelterRoutes');
 const assistanceRoutes = require('./routes/assistanceRoutes');
+const volunteerRoutes = require('./routes/volunteerRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -30,6 +32,7 @@ app.use('/api/reports', reportRoutes);
 app.use('/api/shelters', shelterRoutes);
 app.use('/api/assistance', assistanceRoutes);
 app.use('/api/volunteers', volunteerRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Health Check Endpoint
 app.get('/', (req, res) => {
