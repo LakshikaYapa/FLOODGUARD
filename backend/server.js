@@ -26,6 +26,7 @@ const assistanceRoutes = require('./routes/assistanceRoutes');
 const volunteerRoutes = require('./routes/volunteerRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 // API Routes
 app.use('/api/admin', adminRoutes);
@@ -35,6 +36,7 @@ app.use('/api/shelters', shelterRoutes);
 app.use('/api/assistance', assistanceRoutes);
 app.use('/api/volunteers', volunteerRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/emergency-contacts', contactRoutes);
 
 // Health Check Endpoint
 app.get('/', (req, res) => {
