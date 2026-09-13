@@ -11,6 +11,7 @@ import EmergencyAssistance from './pages/EmergencyAssistance';
 import VolunteerPortal from './pages/VolunteerPortal';
 import AdminDashboard from './pages/AdminDashboard';
 import EmergencyContacts from './pages/EmergencyContacts';
+import SafetyGuidance from './pages/SafetyGuidance';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/assistance" element={<EmergencyAssistance />} /> 
           <Route path="/volunteers" element={<VolunteerPortal />} />
           <Route path="/contacts" element={<EmergencyContacts />} />
+          <Route path="/safety" element={<SafetyGuidance />} />
         </Routes>
       </main>
     </div>
