@@ -10,6 +10,7 @@ import Shelters from './pages/Shelters';
 import EmergencyAssistance from './pages/EmergencyAssistance';
 import VolunteerPortal from './pages/VolunteerPortal';
 import AdminDashboard from './pages/AdminDashboard';
+import EmergencyContacts from './pages/EmergencyContacts';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/shelters" element={<Shelters />} />
           <Route path="/assistance" element={<EmergencyAssistance />} /> 
           <Route path="/volunteers" element={<VolunteerPortal />} />
+          <Route path="/emergency-contacts" element={<EmergencyContacts />} />
         </Routes>
       </main>
     </div>

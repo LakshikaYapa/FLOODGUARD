@@ -42,6 +42,9 @@ const Navbar = () => {
               <Link to="/assistance" className="hover:text-blue-400 font-semibold transition">
                 🆘 {lang === 'en' ? 'Emergency Help' : 'හදිසි සහන'}
               </Link>
+              <Link to="/contacts" className="hover:text-blue-400 font-semibold transition">
+                📞 {lang === 'en' ? 'Hotlines' : 'ඇමතුම්'}
+              </Link>
               {isAdmin && (
                 <Link to="/admin" className="hover:text-amber-400 font-semibold transition text-amber-400">
                   ⚙️ {lang === 'en' ? 'Admin' : 'පාලක පුවරුව'}
@@ -117,6 +120,9 @@ const Navbar = () => {
             </Link>
             <Link to="/assistance" onClick={() => setIsOpen(false)} className="block text-sm text-slate-300 hover:text-blue-400">
               🆘 {lang === 'en' ? 'Emergency Help' : 'හදිසි සහන'}
+            </Link>
+            <Link to="/contacts" onClick={() => setIsOpen(false)} className="block text-sm text-slate-300 hover:text-blue-400">
+              📞 {lang === 'en' ? 'Hotlines' : 'ඇමතුම්'}
             </Link>
             {isAdmin && (
               <Link to="/admin" onClick={() => setIsOpen(false)} className="block text-sm text-amber-400 font-semibold hover:text-amber-300">
