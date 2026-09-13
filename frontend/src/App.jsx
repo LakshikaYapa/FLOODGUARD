@@ -33,7 +33,7 @@ function App() {
           <Route path="/shelters" element={<Shelters />} />
           <Route path="/assistance" element={<EmergencyAssistance />} /> 
           <Route path="/volunteers" element={<VolunteerPortal />} />
-          <Route path="/emergency-contacts" element={<EmergencyContacts />} />
+          <Route path="/contacts" element={<EmergencyContacts />} />
         </Routes>
       </main>
     </div>

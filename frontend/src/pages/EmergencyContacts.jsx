@@ -5,41 +5,98 @@ import { PhoneCall, ShieldAlert, HeartPulse, Flame, Radio } from 'lucide-react';
 
 const EmergencyContacts = () => {
   const { lang } = useContext(LanguageContext);
-  const [contacts, setContacts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('ALL');
 
-  // Fallback default contacts for high availability
+  // Sri Lanka Official Emergency Hotlines List
   const defaultContacts = [
-    { _id: '1', name: { en: 'Disaster Management Centre (DMC)', si: 'ආපදා කළමනාකරණ මධ්‍යස්ථානය' }, category: 'DISASTER_MANAGEMENT', phone: '117', district: 'All Island' },
-    { _id: '2', name: { en: 'Emergency Police Operating Room', si: 'පොලිස් හදිසි ඇමතුම් ඒකකය' }, category: 'POLICE', phone: '119', district: 'All Island' },
-    { _id: '3', name: { en: 'Suwa Seriya Ambulance Service', si: 'සුවසැරිය ඇම්බියුලන්ස් සේවාව' }, category: 'AMBULANCE', phone: '1990', district: 'All Island' },
-    { _id: '4', name: { en: 'Fire & Rescue Service', si: 'ගිනි නිවන සහ මුදාගැනීමේ සේවාව' }, category: 'FIRE_RESCUE', phone: '110', district: 'All Island' },
+    { 
+      _id: '1', 
+      nameEn: 'Disaster Management Centre (DMC) Call Centre', 
+      nameSi: 'ආපදා කළමනාකරණ මධ්‍යස්ථාන ඇමතුම් ඒකකය', 
+      category: 'DISASTER_MANAGEMENT', 
+      phone: '117', 
+      district: 'All Island' 
+    },
+    { 
+      _id: '2', 
+      nameEn: 'Emergency Police Operating Room', 
+      nameSi: 'පොලිස් හදිසි ඇමතුම් ඒකකය', 
+      category: 'POLICE', 
+      phone: '119', 
+      district: 'All Island' 
+    },
+    { 
+      _id: '3', 
+      nameEn: '1990 Suwa Seriya Free Ambulance Service', 
+      nameSi: '1990 සුවසැරිය නොමිලේ ඇම්බියුලන්ස් සේවාව', 
+      category: 'AMBULANCE', 
+      phone: '1990', 
+      district: 'All Island' 
+    },
+    { 
+      _id: '4', 
+      nameEn: 'Fire & Rescue Service (Colombo Command)', 
+      nameSi: 'ගිනි නිවන සහ මුදාගැනීමේ සේවාව', 
+      category: 'FIRE_RESCUE', 
+      phone: '110', 
+      district: 'All Island' 
+    },
+    { 
+      _id: '5', 
+      nameEn: 'Sri Lanka Navy Disaster Response HQ', 
+      nameSi: 'ශ්‍රී ලංකා නාවික හමුදා ආපදා සහන මූලස්ථානය', 
+      category: 'DISASTER_MANAGEMENT', 
+      phone: '0112445368', 
+      district: 'All Island' 
+    },
+    { 
+      _id: '6', 
+      nameEn: 'Sri Lanka Air Force Search & Rescue', 
+      nameSi: 'ශ්‍රී ලංකා ගුවන් හමුදා සෙවීම් හා මුදාගැනීම් ඒකකය', 
+      category: 'DISASTER_MANAGEMENT', 
+      phone: '0112343970', 
+      district: 'All Island' 
+    },
+    { 
+      _id: '7', 
+      nameEn: 'Irrigation Department (Flood Information Centre)', 
+      nameSi: 'වාරිමාර්ග දෙපාර්තමේන්තුව (ගංවතුර තොරතුරු මධ්‍යස්ථානය)', 
+      category: 'DISASTER_MANAGEMENT', 
+      phone: '0112586798', 
+      district: 'All Island' 
+    },
+    { 
+      _id: '8', 
+      nameEn: 'Red Cross Sri Lanka Disaster Hotline', 
+      nameSi: 'ශ්‍රී ලංකා රතු කුරුස ආපදා හදිසි ඇමතුම්', 
+      category: 'AMBULANCE', 
+      phone: '0112691095', 
+      district: 'All Island' 
+    }
   ];
 
+  const [contacts, setContacts] = useState(defaultContacts);
+
   useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const res = await API.get('/emergency-contacts');
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+          setContacts(res.data);
+        }
+      } catch (err) {
+        console.warn('Backend contacts fetch failed, using built-in hotlines.');
+      }
+    };
     fetchContacts();
   }, []);
 
-  const fetchContacts = async () => {
-    try {
-      const res = await API.get('/emergency-contacts');
-      if (res.data && res.data.length > 0) {
-        setContacts(res.data);
-      } else {
-        setContacts(defaultContacts);
-      }
-    } catch (err) {
-      console.error(err);
-      setContacts(defaultContacts);
-    }
-  };
-
   const getCategoryIcon = (category) => {
     switch (category) {
-      case 'POLICE': return <ShieldAlert className="w-5 h-5 text-blue-400" />;
-      case 'AMBULANCE': return <HeartPulse className="w-5 h-5 text-rose-500" />;
-      case 'FIRE_RESCUE': return <Flame className="w-5 h-5 text-amber-500" />;
-      default: return <Radio className="w-5 h-5 text-emerald-400" />;
+      case 'POLICE': return <ShieldAlert className="w-5 h-5 text-blue-400 shrink-0" />;
+      case 'AMBULANCE': return <HeartPulse className="w-5 h-5 text-rose-500 shrink-0" />;
+      case 'FIRE_RESCUE': return <Flame className="w-5 h-5 text-amber-500 shrink-0" />;
+      default: return <Radio className="w-5 h-5 text-emerald-400 shrink-0" />;
     }
   };
 
@@ -79,29 +136,35 @@ const EmergencyContacts = () => {
 
       {/* Contacts Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filteredContacts.map((contact) => (
-          <div key={contact._id} className="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex items-center justify-between shadow-lg hover:border-slate-700 transition">
-            <div className="space-y-1">
-              <div className="flex items-center space-x-2">
-                {getCategoryIcon(contact.category)}
-                <h3 className="font-bold text-sm text-slate-200">
-                  {lang === 'en' ? contact.name.en : contact.name.si}
-                </h3>
-              </div>
-              <p className="text-xs text-slate-400">
-                📍 {contact.district || 'All Island'}
-              </p>
-            </div>
+        {filteredContacts.map((contact, index) => {
+          const title = typeof contact.name === 'string' 
+            ? contact.name 
+            : (contact.name?.[lang] || (lang === 'en' ? contact.nameEn : contact.nameSi) || 'Emergency Service');
 
-            <a
-              href={`tel:${contact.phone}`}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl font-bold text-sm flex items-center space-x-1.5 shadow-lg shadow-emerald-600/30 transition"
-            >
-              <PhoneCall className="w-4 h-4" />
-              <span>{contact.phone}</span>
-            </a>
-          </div>
-        ))}
+          return (
+            <div key={contact._id || index} className="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex items-center justify-between shadow-lg hover:border-slate-700 transition gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center space-x-2">
+                  {getCategoryIcon(contact.category)}
+                  <h3 className="font-bold text-sm text-slate-200">
+                    {title}
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-400">
+                  📍 {contact.district || 'All Island'}
+                </p>
+              </div>
+
+              <a
+                href={`tel:${contact.phone}`}
+                className="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl font-bold text-sm flex items-center space-x-1.5 shadow-lg shadow-emerald-600/30 transition shrink-0"
+              >
+                <PhoneCall className="w-4 h-4" />
+                <span className="text-white font-extrabold">{contact.phone}</span>
+              </a>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
