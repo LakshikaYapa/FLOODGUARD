@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import API from '../services/api';
 import { LanguageContext } from '../context/LanguageContext';
 import { AuthContext } from '../context/AuthContext';
 import MapView from '../components/MapView';
 import rainBg from '../assets/rain-bg.jpg';
+import { Home, ArrowRight } from 'lucide-react';
 
 const Dashboard = () => {
   const { lang } = useContext(LanguageContext);
@@ -17,10 +19,9 @@ const Dashboard = () => {
   const [newPhoto, setNewPhoto] = useState({ title: '', url: '', location: '' });
   const [showUpload, setShowUpload] = useState(false);
 
-  const isVolunteer = user?.roles?.includes('volunteer');
+  const isVolunteer = user?.roles?.includes('volunteer') || user?.role === 'volunteer';
 
   useEffect(() => {
-    // Fetch live data from backend
     API.get('/reports').then((res) => setIncidents(res.data)).catch(() => setIncidents([]));
     API.get('/shelters').then((res) => setShelters(res.data)).catch(() => setShelters([]));
   }, []);
@@ -57,7 +58,37 @@ const Dashboard = () => {
           </p>
         </section>
 
-        {/* 2. Incidents Section */}
+        {/* 2. Quick Access Services - Card 1 Only */}
+        <section className="space-y-4">
+          <h2 className="text-xl font-bold text-white border-b border-slate-700/60 pb-2 flex items-center space-x-2">
+            <span>⚡ {lang === 'en' ? 'Quick Access Services' : 'පද්ධති ප්‍රධාන සේවාවන්'}</span>
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Card 1: Emergency Shelters */}
+            <Link 
+              to="/shelters" 
+              className="group bg-slate-900/70 backdrop-blur border border-slate-700/60 hover:border-blue-500/80 p-5 rounded-xl transition duration-300 flex flex-col justify-between space-y-3 shadow-lg"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="p-2 bg-blue-500/20 border border-blue-500/30 rounded-lg text-blue-400">
+                    <Home className="w-5 h-5" />
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-400 group-hover:translate-x-1 transition" />
+                </div>
+                <h3 className="font-bold text-base text-white">
+                  {lang === 'en' ? 'Emergency Shelters' : 'සුරක්ෂිත මධ්‍යස්ථාන'}
+                </h3>
+                <p className="text-xs text-slate-300">
+                  {lang === 'en' ? 'Locate nearby relief camps & capacity.' : 'ආසන්නතම සහන මධ්‍යස්ථාන පරීක්ෂා කරන්න.'}
+                </p>
+              </div>
+            </Link>
+          </div>
+        </section>
+
+        {/* 3. Incidents Section */}
         <section className="space-y-3">
           <h2 className="text-xl font-bold text-white border-b border-slate-700/60 pb-2">
             🚨 {lang === 'en' ? 'Recent Flood Incidents' : 'නවතම ආපදා වාර්තා'}
@@ -78,7 +109,7 @@ const Dashboard = () => {
           )}
         </section>
 
-        {/* 3. Volunteer Photos Section */}
+        {/* 4. Volunteer Photos Section */}
         <section className="space-y-4">
           <div className="flex justify-between items-center border-b border-slate-700/60 pb-2">
             <div>
@@ -114,7 +145,7 @@ const Dashboard = () => {
           </div>
         </section>
 
-        {/* 4. Live Interactive Map Section (AT THE BOTTOM OF THE PAGE) */}
+        {/* 5. Live Interactive Map Section */}
         <section className="space-y-3 pt-4 border-t border-slate-800">
           <div className="flex justify-between items-center pb-2">
             <div>
